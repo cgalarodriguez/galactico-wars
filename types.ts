@@ -5,19 +5,19 @@ export interface Vector2 {
 }
 
 export enum EnemyType {
-  SQUARE = 'SQUARE',
-  SWARMER = 'SWARMER',
-  SNIPER = 'SNIPER',
-  HEAVY = 'HEAVY',
-  KAMIKAZE = 'KAMIKAZE',
+  MYSTIC_SHARD = 'MYSTIC_SHARD', // Básico
+  VOID_STALKER = 'VOID_STALKER', // Rápido
+  ORACLE_EYE = 'ORACLE_EYE',     // Sniper
+  TITAN_CORE = 'TITAN_CORE',     // Heavy
+  WISP = 'WISP',                 // Kamikaze
   BOSS = 'BOSS'
 }
 
 export enum PowerUpType {
-  HEALTH = 'HEALTH',
-  TURBO = 'TURBO',
-  TRIPLE_SHOT = 'TRIPLE_SHOT',
-  SHIELD = 'SHIELD'
+  RECOVERY = 'RECOVERY',
+  WEAPON_UPGRADE = 'WEAPON_UPGRADE',
+  SHIELD = 'SHIELD',
+  SOUL_ENERGY = 'SOUL_ENERGY'
 }
 
 export interface Enemy {
@@ -32,12 +32,8 @@ export interface Enemy {
   rotation: number;
   rotationSpeed: number;
   lastShot: number;
-  // State for advanced patterns
   phase?: number;
   baseX?: number;
-  isDashing?: boolean;
-  attackTimer?: number;
-  attackPattern?: number;
 }
 
 export interface Bullet {
@@ -45,55 +41,28 @@ export interface Bullet {
   pos: Vector2;
   velocity: Vector2;
   isSpecial: boolean;
-}
-
-export interface EnemyBullet {
-  id: string;
-  pos: Vector2;
-  velocity: Vector2;
-  color?: string;
-}
-
-export interface PowerUp {
-  id: string;
-  type: PowerUpType;
-  pos: Vector2;
-  velocity: Vector2;
-  size: number;
-  rotation: number;
-}
-
-export interface ExplosionParticle {
-  id: string;
-  pos: Vector2;
-  velocity: Vector2;
-  life: number;
-  maxLife: number;
   color: string;
-  size: number;
-  shape?: 'circle' | 'square' | 'shard';
-  particleType?: 'debris' | 'spark' | 'glow';
 }
 
 export interface GameState {
-  playerPos: number; // 0 to 100
+  playerPos: number;
   bullets: Bullet[];
-  enemyBullets: EnemyBullet[];
+  enemyBullets: { id: string; pos: Vector2; velocity: Vector2; color: string }[];
   enemies: Enemy[];
-  powerUps: PowerUp[];
-  explosions: ExplosionParticle[];
+  powerUps: { id: string; type: PowerUpType; pos: Vector2; velocity: Vector2; size: number }[];
+  explosions: any[];
   score: number;
-  health: number;
+  lives: number; // Ahora son 7 vidas
+  maxLives: number;
+  invulnerable: number; // Tiempo de invulnerabilidad tras golpe
   turbo: number;
   isTurboActive: boolean;
-  tripleShotTimer: number;
-  shieldTimer: number;
+  weaponLevel: number; // 1 to 3
   time: number;
-  rank: number;
-  stage: number;
+  stage: number; // 1 to 7
   gameOver: boolean;
   victory: boolean;
   hitFlash: number;
   shake: number;
-  bossIncoming: number; // Timer for anticipation
+  bossIncoming: number;
 }
